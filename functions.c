@@ -52,8 +52,17 @@ void Normalizar (char* descripcion)
         }
         else
             descripcion ++;
+    }
+}
 
+void PuntoAComa(const double indice, char* cadena)
+{
+    sprintf(cadena, "%f", indice);
+    char *punto = strchr(cadena, '.');
 
+    if(punto!=NULL)
+    {
+        *punto = ',';
     }
 
 }
