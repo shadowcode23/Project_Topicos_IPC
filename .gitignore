@@ -1,0 +1,16 @@
+# Archivos objeto compilados
+*.o
+*.obj
+
+# Ejecutables
+*.exe
+*.out
+*.app
+
+# Archivos de configuración de Code::Blocks
+*.depend
+*.layout
+
+# Carpetas comunes de compilación
+bin/
+obj/
