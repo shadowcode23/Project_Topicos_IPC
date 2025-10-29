@@ -22,5 +22,7 @@ void decodificar_fecha(int* periodo);
 void ConvertirFecha(int* periodo, char* cadena);
 void Normalizar (char* descripcion);
 void PuntoAComa(const double indice, char* cadena);
+void SolicitarDatos();
+
 
 #endif // HEADER_H_INCLUDED

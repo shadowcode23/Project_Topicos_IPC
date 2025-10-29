@@ -66,3 +66,33 @@ void PuntoAComa(const double indice, char* cadena)
     }
 
 }
+
+void SolicitarDatos()
+{
+    float monto;
+    int dato;
+
+    printf("\nIngresar monto expresado en pesos: ");
+    do
+    {
+        scanf("%f", &monto);
+        printf("\nIngresar monto expresado en pesos: ");
+    }while(monto<0);
+
+    printf("\n1-Nacional\n2-GBA\n3-Pampeana\n4-Cuyo\n5-Noroeste\n6-Noreste\n7-Patagonia");
+    do
+    {
+        printf("\nIngresar numero segun region que quiera solicitar: ");
+        scanf("%d", &dato);
+
+    }while(dato<1 || dato>7);
+
+    printf("\nIngresar fecha (desde): ");
+    printf("\nIngresar fecha (hasta): ");
+
+
+
+
+
+
+}

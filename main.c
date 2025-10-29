@@ -19,6 +19,7 @@ int main()
     PuntoAComa(indice,cadenaConversion);
     printf("\n\nPunto a Coma: %s\n\n", cadenaConversion);
 
+    SolicitarDatos();
 
     return 0;
 }
