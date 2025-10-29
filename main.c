@@ -19,7 +19,17 @@ int main()
     PuntoAComa(indice,cadenaConversion);
     printf("\n\nPunto a Coma: %s\n\n", cadenaConversion);
 
+
+
+    //sizeof(vector)/sizeof(vector[0])
+
+    double monto_ajustado;
+    double var_porcentual;
+
     SolicitarDatos();
+
+    analisis vec_analisis[] = {};
+    Analisis_evo(*ipc ipc, vec_analisis, unsigned ce)
 
     return 0;
 }

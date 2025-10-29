@@ -44,7 +44,7 @@ void Normalizar (char* descripcion)
 
             while(*descripcion)
             {
-                    *descripcion = AMINU(*descripcion);
+                *descripcion = AMINU(*descripcion);
 
                 descripcion ++;
             }
@@ -67,32 +67,105 @@ void PuntoAComa(const double indice, char* cadena)
 
 }
 
-void SolicitarDatos()
+void SolicitarDatos(datos* datos, IPC* ipc, double* monto_ajustado, double* var_porcentual,unsigned ce)
 {
-    float monto;
-    int dato;
+    const char* region[7] = {"Nacional", "GBA", "Pampeana", "Cuyo", "Noroeste", "Noreste", "Patagonia"};
+    int nro;
+    double i_desde = -1;
+    double i_hasta = -1;
 
-    printf("\nIngresar monto expresado en pesos: ");
     do
     {
-        scanf("%f", &monto);
         printf("\nIngresar monto expresado en pesos: ");
-    }while(monto<0);
+        scanf("%1f", &datos->monto);
+
+    }
+    while(datos->monto < 0);
 
     printf("\n1-Nacional\n2-GBA\n3-Pampeana\n4-Cuyo\n5-Noroeste\n6-Noreste\n7-Patagonia");
-    do
-    {
-        printf("\nIngresar numero segun region que quiera solicitar: ");
-        scanf("%d", &dato);
+    printf("\nIngresar numero segun region que quiera solicitar: ");
+    scanf("%d", &nro);
+    strcpy(datos->region, region[nro-1]);
 
-    }while(dato<1 || dato>7);
 
     printf("\nIngresar fecha (desde): ");
+    datos->fecha_desde = IngresarFecha();
+
     printf("\nIngresar fecha (hasta): ");
+    datos->fecha_hasta = IngresarFecha();
 
 
+    while(ce--)
+    {
+        if(strcmp("NIVEL GENERAL", ipc->descripcion) == 0 && strcmp(datos->region,ipc->region) == 0)
+        {
+            if(datos->fecha_desde == ipc->periodo)
+            {
+                i_desde = ipc->indice;
 
+            }
+            else if(datos->fecha_hasta == ipc->periodo)
+            {
+                i_hasta = ipc->indice;
 
+            }
 
+        }
+
+        ipc ++;
+
+        if(i_desde != -1 && i_hasta != -1)
+        {
+            *monto_ajustado = datos->monto * (i_hasta / i_desde);
+            *var_porcentual = (i_hasta / i_desde -1)*100;
+        }
+
+    }
+}
+
+int IngresarFecha()
+{
+    int mes;
+    int anio;
+    do
+    {
+        printf("Ingrese Mes (del 1 al 12): ");
+        scanf("%d", &mes);
+    }
+    while(mes<1 || mes>12);
+
+    printf("Ingrese año: ");
+    scanf("%d", &anio);
+
+    mes += (anio*100);
+
+    return mes;
+}
+
+void Analisis_evo(IPC* ipc, analisis* vec, unsigned ce)
+{
+    char* bienes [5] = {"Alimentos y bebidas no alcohólicas" , "Bebidas alcohólicas y tabaco" , "Prendas de vestir y calzado",
+                        "Bienes y servicios varios", "Equipamiento y mantenimiento del hogar"};
+
+    char* servicios [10] = {"Recreación y cultura" , "Restaurantes y hoteles" , "Salud",
+                            "Transporte", "Educación", "Comunicación", "Vivienda", "agua",
+                            "electricidad", "gas y otros combustibles"};
+
+    if(ce == 0) //como genere un vector desde el main vacio, no tiene elementos y va a llenarse aca el primer elemento.
+    {
+        strcpy(vec->region, ipc->region);
+        vec->periodo = ipc->periodo;
+        strcpy(vec->descripcion, ipc->descripcion);
+        vec->indice_IPC = ipc->indice;
+        *(ce)++;
+    }
+
+    while(ce--)
+    {
+        if(vec->periodo == ipc->periodo)
+        {
+            if(strcmp(vec->region, ipc->region) == 0)
+        }
+    }
 
 }
