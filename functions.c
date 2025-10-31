@@ -144,12 +144,8 @@ int IngresarFecha()
 
 void Analisis_evo(IPC* ipc, analisis* vec, unsigned ce)
 {
-    char* bienes [5] = {"Alimentos y bebidas no alcohólicas" , "Bebidas alcohólicas y tabaco" , "Prendas de vestir y calzado",
-                        "Bienes y servicios varios", "Equipamiento y mantenimiento del hogar"};
 
-    char* servicios [10] = {"Recreación y cultura" , "Restaurantes y hoteles" , "Salud",
-                            "Transporte", "Educación", "Comunicación", "Vivienda", "agua",
-                            "electricidad", "gas y otros combustibles"};
+
 
     if(ce == 0) //como genere un vector desde el main vacio, no tiene elementos y va a llenarse aca el primer elemento.
     {
@@ -157,15 +153,76 @@ void Analisis_evo(IPC* ipc, analisis* vec, unsigned ce)
         vec->periodo = ipc->periodo;
         strcpy(vec->descripcion, ipc->descripcion);
         vec->indice_IPC = ipc->indice;
-        *(ce)++;
+        ce++;
     }
+
+    //Agrupar(vec);
 
     while(ce--)
     {
-        if(vec->periodo == ipc->periodo)
-        {
-            if(strcmp(vec->region, ipc->region) == 0)
-        }
+
     }
 
 }
+
+
+void desplazar(void* insertar, void* fin, size_t tam)
+{
+    while(insertar <= fin)
+    {
+        memcpy(fin+tam, fin, tam);
+        fin -=tam;
+    }
+}
+
+void insertar_ordenado(IPC* registro, analisis* vector, unsigned* ce)
+{
+    const char* bienes[] = {"Alimentos y bebidas no alcohólicas", "Bebidas alcohólicas y tabaco", "Prendas de vestir y calzado", "Bienes y servicios varios", "Equipamiento y mantenimiento del hogar"};
+    const char* servicios[] = {"Recreación y cultura", "Restaurantes y hoteles", "Salud", "Transporte", "Educación", "Comunicación", "Vivienda"," agua", "electricidad", "gas y otros combustibles"};
+    analisis* fin = vector + (*ce);
+
+    while(vector < fin)
+    {
+        if(vector->periodo < registro->periodo)
+            vector++;
+        else if(vector->periodo == registro->periodo && strcmp(vector->descripcion, registro->descripcion) < 0)
+            vector++;
+        else
+            break;
+    }
+    if(*ce != 0)
+        desplazar(vector, fin, sizeof(analisis));
+
+    strcpy(vector->descripcion, registro->descripcion);
+    strcpy(vector->region, registro->region);
+    vector->indice_IPC = registro->indice;
+    vector->periodo = registro->periodo;
+    if(buscar_generico(bienes, sizeof(bienes)/sizeof(bienes[0]), sizeof(char*), registro->descripcion, compara))
+        strcpy(vector->grupo, "Bienes");
+    else if(buscar_generico(servicios, sizeof(servicios)/sizeof(servicios[0]), sizeof(char*), registro->descripcion, compara))
+        strcpy(vector->grupo, "Servicios");
+    else
+        strcpy(vector->grupo, "N/A");
+    (*ce)++;
+}
+
+void* buscar_generico(void* registros, unsigned ce, size_t tam, void* elemento, int cmp(void*, void*))
+{
+
+    while(ce--)
+    {
+        if(compara(registros, elemento) == 0)
+            return registros;
+        registros += tam;
+    }
+    return NULL;
+
+}
+
+int compara(void* a, void* b)
+{
+    return strcmp(*(char**)a,(char*)b);
+
+}
+
+

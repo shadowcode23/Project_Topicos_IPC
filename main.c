@@ -26,10 +26,13 @@ int main()
     double monto_ajustado;
     double var_porcentual;
 
-    SolicitarDatos();
+    //SolicitarDatos();
 
     analisis vec_analisis[] = {};
-    Analisis_evo(*ipc ipc, vec_analisis, unsigned ce)
+    //Analisis_evo(*IPC ipc, vec_analisis, unsigned ce);
+
+    char cadenaConversion2[17] = {};
+    PuntoAComa(indice, cadenaConversion2);
 
     return 0;
 }
